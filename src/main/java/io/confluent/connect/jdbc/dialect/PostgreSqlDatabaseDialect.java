@@ -274,4 +274,9 @@ public class PostgreSqlDatabaseDialect extends GenericDatabaseDialect {
     }
   }
 
+  @Override
+  protected int decimalScale(ColumnDefinition defn) {
+    return defn.scale() == NUMERIC_TYPE_SCALE_UNSET ? -1 : defn.scale();
+  }
+
 }
