@@ -587,12 +587,14 @@ public class GenericDatabaseDialect implements DatabaseDialect {
         final int jdbcType = rs.getInt(5);
         final String typeName = rs.getString(6);
         final int precision = rs.getInt(7);
+        log.info("CWR: Beginning {}.{}", tableName, columnName);
         int scale = rs.getInt(9);
-        log.debug("CWR: {}.{} scale before {}", tableName, columnName, scale);
+        log.info("CWR: {}.{} scale before {}", tableName, columnName, scale);
         if (rs.wasNull()) {
           scale = NUMERIC_TYPE_SCALE_UNSET;
           log.debug("CWR!!!: {}.{} scale after {}", tableName, columnName, scale);
         }
+        log.info("CWR: Ending {}.{}", tableName, columnName);
         final String typeClassName = null;
         Nullability nullability;
         final int nullableValue = rs.getInt(11);
@@ -1005,7 +1007,7 @@ public class GenericDatabaseDialect implements DatabaseDialect {
       case Types.DECIMAL: {
         log.debug("DECIMAL with precision: '{}' and scale: '{}'", precision, scale);
         scale = decimalScale(columnDefn);
-        log.debug("CWR: computed scale: {}", scale);
+        log.info("CWR: computed scale: {}", scale);
         SchemaBuilder fieldBuilder = Decimal.builder(scale);
         if (optional) {
           fieldBuilder.optional();
@@ -1343,7 +1345,7 @@ public class GenericDatabaseDialect implements DatabaseDialect {
   }
 
   protected int decimalScale(ColumnDefinition defn) {
-    log.debug("CWR: decimalScale {}.{}: {}", 
+    log.info("CWR: decimalScale {}.{}: {}", 
         defn.tableId().tableName(), defn.id().name(), defn.scale());
     return defn.scale() == NUMERIC_TYPE_SCALE_UNSET ? NUMERIC_TYPE_SCALE_HIGH : defn.scale();
   }
